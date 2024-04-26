@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="705e7baf-d515-4a2a-b566-1cb198f9d49a" name="Changes" comment="Performed file transfer test and verified activity logs">
-      <change afterPath="$PROJECT_DIR$/src/test_drtp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/drtp.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/drtp.log" afterDir="false" />
-    </list>
+    <list default="true" id="705e7baf-d515-4a2a-b566-1cb198f9d49a" name="Changes" comment="Added automated testing for file transfers in DRTP application" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -165,7 +162,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714170494269</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added automated testing for file transfers in DRTP application">
+      <option name="closed" value="true" />
+      <created>1714171416353</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1714171416353</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -176,6 +181,7 @@
     <MESSAGE value="Successful manual test of file transfer between client and server" />
     <MESSAGE value="Added server logs and reflections post file transfer tests and reset received_file." />
     <MESSAGE value="Performed file transfer test and verified activity logs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Performed file transfer test and verified activity logs" />
+    <MESSAGE value="Added automated testing for file transfers in DRTP application" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added automated testing for file transfers in DRTP application" />
   </component>
 </project>
