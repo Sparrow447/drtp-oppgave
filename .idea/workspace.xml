@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="705e7baf-d515-4a2a-b566-1cb198f9d49a" name="Changes" comment="Added automated testing for file transfers in DRTP application" />
+    <list default="true" id="705e7baf-d515-4a2a-b566-1cb198f9d49a" name="Changes" comment="Added automated testing for file transfers in DRTP application">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/drtp.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/drtp.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/received_file" beforeDir="false" afterPath="$PROJECT_DIR$/src/received_file" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/testfile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/testfile.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -170,7 +175,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714171416353</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added automated testing for file transfers in DRTP application">
+      <option name="closed" value="true" />
+      <created>1714171671449</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1714171671449</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
