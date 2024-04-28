@@ -2,9 +2,12 @@ import argparse
 import logging
 import socket
 
-# Configure basic logging to a file
-logging.basicConfig(filename='drtp.log', level=logging.INFO, filemode='w', format='%(asctime)s - %(levelname)s - %('
-                                                                                  'message)s')
+# Configure logging to write to drtp.log, set the logging level to INFO, and specify the log format.
+logging.basicConfig(filename='drtp.log', level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Set the buffer size for UDP packets
+BUFFER_SIZE = 1024
 
 
 def parse_arguments():
@@ -39,76 +42,55 @@ def parse_arguments():
 
 def run_server(ip, port, file_path='received_file'):
     """
-    Start a DRTP server that listens for incoming data and writes it to a file.
-
-    Args:
-        ip (str): IP address to bind the server to.
-        port (int): Port number for the server to listen on.
-        file_path (str): The path where the received file will be saved. Defaults to 'received_file'.
-
-    The server listens indefinitely until a KeyboardInterrupt is issued. Each received chunk of data
-    is written to the file and an acknowledgment is sent back to the client.
+    Runs the server which listens for incoming UDP packets and writes them to a file.
+    It provides feedback via logging and handles shutdowns and socket errors gracefully.
     """
-    # Initialize the server socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_socket.bind((ip, port))
-    logging.info(f"Server listening on {ip}:{port}")
-    print(f"Server listening on {ip}:{port}")
+    try:
+        server_socket.bind((ip, port))
+        logging.info(f"Server listening on {ip}:{port}")
 
-    # Open the file for writing received data
-    with open(file_path, 'wb') as file_to_write:
-        try:
-            # Server loop
+        with open(file_path, 'wb') as file_to_write:
             while True:
-                chunk, client_address = server_socket.recvfrom(1024)
-                logging.info(f"Received data from {client_address}")
-                print(f"Received data from {client_address}")
-                # Write received data to file
-                file_to_write.write(chunk)
-                file_to_write.flush()
-                # Send acknowledgment
-                server_socket.sendto(b'ACK', client_address)
-        except KeyboardInterrupt:
-            logging.info("Server is shutting down.")
-            print("Server is shutting down.")
-        finally:
-            server_socket.close()
+                try:
+                    chunk, client_address = server_socket.recvfrom(BUFFER_SIZE)
+                    logging.info(f"Received data from {client_address}")
+                    file_to_write.write(chunk)
+                    file_to_write.flush()
+                    server_socket.sendto(b'ACK', client_address)
+                except socket.error as e:
+                    logging.error(f"Socket error: {e}")
+                    break  # Exit the loop on socket error
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+    finally:
+        server_socket.close()
+        logging.info("Server socket closed.")
 
 
 def run_client(server_ip, server_port, file_path):
     """
-    Start a DRTP client to send a file to a server over UDP.
-
-    Args:
-        server_ip (str): IP address of the server to send data to.
-        server_port (int): Port number of the server to connect to.
-        file_path (str): Path of the file to send.
-
-    The client reads the file in chunks and sends each chunk to the server, waiting for an
-    acknowledgment before sending the next chunk. If the file does not exist or an error occurs,
-    an appropriate message is printed.
+    Sends a file to the server using UDP packets.
+    It waits for an acknowledgment from the server before sending the next packet.
     """
-    # Initialize the client socket
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     try:
-        # Open the file for reading
         with open(file_path, 'rb') as file_to_send:
-            chunk = file_to_send.read(1024)
-            # Client loop
+            chunk = file_to_send.read(BUFFER_SIZE)
             while chunk:
-                client_socket.sendto(chunk, (server_ip, server_port))
-                ack, _ = client_socket.recvfrom(1024)
-                logging.info(f"Acknowledgment received from server: {ack.decode()}")
-                print(f"Acknowledgment received from server: {ack.decode()}")
-                # Read the next chunk of the file
-                chunk = file_to_send.read(1024)
+                try:
+                    client_socket.sendto(chunk, (server_ip, server_port))
+                    ack, _ = client_socket.recvfrom(BUFFER_SIZE)
+                    logging.info(f"Acknowledgment received from server: {ack.decode()}")
+                    chunk = file_to_send.read(BUFFER_SIZE)
+                except socket.timeout:
+                    logging.warning("No acknowledgment received, resending last packet.")
+                    continue  # Resend the last packet
     except FileNotFoundError:
         logging.error(f"The file {file_path} does not exist.")
-        print(f"The file {file_path} does not exist.")
     except Exception as e:
         logging.error(f"An error occurred: {e}")
-        print(f"An error occurred: {e}")
     finally:
         client_socket.close()
 
